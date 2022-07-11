@@ -232,7 +232,7 @@ target_size = 64
 # importing learned weights
 # persistence
 
-perweights = './new_weights//'
+perweights = './new_weights/'
 Wxp = np.loadtxt(perweights + 'Wx2237_per.csv').astype(np.float32)
 Whp = np.loadtxt(perweights + 'Wh2237_per.csv').astype(np.float32)
 Wop = np.loadtxt(perweights + 'Wo2237_per.csv').astype(np.float32)
