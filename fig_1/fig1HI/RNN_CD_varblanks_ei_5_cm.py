@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-@author(s): Jogendra Kundu      jogendrak@iisc.ac.in
-            Yash M. Sawant     yashsawant@iisc.ac.in
+@author(s): Jogendra Kundu,
+            Yash M. Sawant
 
 @last edited: Dec, 2021
 """
@@ -20,9 +20,6 @@ from os import mkdir
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 
-
-
-# In[]: Constructing sparse-topographic connectivity matrices
 CM = np.zeros((64,64),dtype=np.float32)
 l = [(0,3),(2,5),(4,7)]
 for i in range(3):
@@ -82,16 +79,11 @@ Wh_mask_big = np.append( np.append(CM_256_256, CM_256_64, axis=1),
                 np.append(CM_64_256, CM_64_64, axis=1), axis=0)
 Wo_mask_big = np.append(CM_256_64, CM_64_64, axis=0)
 
+# connecting 8 x 8 topological input space to 8 x 8 output space
 
-# In[]:
-""" 
-    The below procedure is same as above for defining connectivity mask matrices but also has a little
-        flexibility in setting receptive field size and the sparsity in connecting the neurons
-"""
-# connecting 8 x 8 topological input space to 8 x 8 output space <--- 
 sz = 8
 rd = 4
-st = 2
+st = 3
 
 l = [[0, rd-1]]
 n = (np.floor((10-rd)/st) + 1).astype(np.int32)
@@ -113,6 +105,7 @@ for i in range(l.shape[0]):
                         n = r * 10 + s
                         matr_tmp[m, n] = 1
                         
+
 idxs = []
 for i in range(10):
     for j in range(10):
@@ -123,6 +116,7 @@ idxs_x = repmat(idxs, 64, 1)
 idxs_y = np.transpose(idxs_x)
 
 cm_64_64 = matr_tmp[idxs_x, idxs_y]
+
 
 # connectivity of 8 x 8 topological space (t.s.) to 16 x 16 t.s.
 
@@ -135,9 +129,10 @@ while i<=256:
     j=j+1
     if (i+1)%16 == 0: i=i+1+16+1
     else: i=i+2
-     
+
+        
 rd = 4
-st = 3
+st = 4
 # connectivity of 16 x 16 t.s. to 16 x 16 t.s.
 cm_256_256 = np.zeros((256, 256), dtype = np.float32)
 l = [[0, rd-1]]
@@ -177,9 +172,7 @@ Wh_mask = np.append(np.append(cm_256_256, cm_64_256.T, axis = 1),
                     np.append(cm_64_256, cm_64_64, axis = 1), axis = 0)
 Wo_mask = np.append(cm_64_256.T, cm_64_64, axis = 0)
 
-
-
-# In[]: defining stRNN class and the associated operations
+# In[]:
 class RNN_cell(object):
 
     """
@@ -306,12 +299,12 @@ def process_batch_input_for_RNN(batch_input):
     return X
 
 
-#In[]: # Placeholder and initializers
+# # Placeholder and initializers
 
 hidden_layer_size = 256+64
 input_size =  64
 target_size = 64
-# In[]: initializing the computational graph
+# In[]:
 # Initializing rnn object
 tf.reset_default_graph()
 rnn = RNN_cell(input_size, hidden_layer_size, target_size)
@@ -372,10 +365,12 @@ loss = (tf.losses.mean_squared_error(target_0, output_0) +
     tf.losses.mean_squared_error(target_8, output_8))
 train_step = tf.train.AdamOptimizer(learning_rate=0.0001).minimize(loss)
 
-# In[]: training the network to persist input in its mnemonic code during the blank epochs
+
+# In[]:
 sample_size = 200000
-M = np.load('../x_full_data_exp_5_modified.npy')
-N = np.load('../y_full_data_exp_5_modified.npy')
+M = np.load('./x_full_data_exp_5_modified.npy')
+N = np.load('./y_full_data_exp_5_modified.npy')
+print('Finished loading dataset')
 
 # Getting Train and test Dataset
 ll_idx = np.random.permutation(sample_size)
@@ -383,77 +378,68 @@ ll_idx_train, ll_idx_test = ll_idx[:180000], ll_idx[-20000:]
 X_train, X_test, y_train, y_test = M[ll_idx_train],  M[ll_idx_test], N[ll_idx_train], N[ll_idx_test]
 
 X_train = X_train.astype(np.float32)
-y_train = y_train.astype(np.float32)
+y_train = np.absolute(y_train.astype(np.float32)) ### update
 X_test = X_test.astype(np.float32)
-y_test = y_test.astype(np.float32)
+y_test = np.absolute(y_test.astype(np.float32)) ### update
 
 # Cuttting for simple iteration
 X_train = X_train[:180000]
 y_train = y_train[:180000]
 
+
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
 
 # In[]:
-for Iter in range(1):
-    try:
-        sess.close()
-    except:
-        print("Error closing session")
-    sess = tf.InteractiveSession(config=config)
+try:
+    sess.close()
+except:
+    print('Error closing session')
+sess = tf.InteractiveSession(config=config)
     
-    #sess = tf.InteractiveSession()
-    sess.run(tf.initialize_all_variables())
-    tvars = tf.trainable_variables()
-    
-    mat = sio.loadmat('./results.mat')
-    tvars[0].load(np.abs(mat['w_x']), sess)
-    tvars[1].load(np.abs(mat['w_h']), sess)
-    tvars[2].load(np.abs(mat['w_o']), sess)
-    tvars[3].load(mat['b_o'].reshape((target_size)), sess)
-    
-    num_epochs = 200
+#sess = tf.InteractiveSession()
+sess.run(tf.initialize_all_variables())
+Wh_v = sess.run(rnn.Wh)
+plt.imshow(Wh_v)
+print(path)
+for it in range(1):
+
+    num_epochs = 1000
     test_epoch_start = 39995  
     data = np.zeros(num_epochs)
     
     # Iterations to do trainning
     # while (epoch < num_epochs): ### update
     epoch = -1
-    while epoch< (num_epochs - 1):
+    #for epoch in range(num_epochs): 
+    while epoch<(num_epochs-1):
         epoch+=1
         start = 0
         end = 128
         for i in range((sample_size-20000)//128):
-            X, Y = input_generator(128, 10)
-            # X = X_train[start:end]
-            # Y = y_train[start:end]
+        #print(epoch,':-',i)
+            X = X_train[start:end]
+            Y = y_train[start:end]
             start = end
             end = start + 128
             sess.run(train_step,feed_dict={rnn._inputs: X, y: Y})   
     
         L = sess.run([loss], feed_dict={rnn._inputs: X_test, y: y_test})
-        
-        # outputs_c = np.swapaxes(sess.run(outputs, feed_dict = {rnn._inputs: X_test}), 0, 1)
-        # hidden_s_c = np.swapaxes(sess.run(hidden_s, feed_dict = {rnn._inputs: X_test}), 0, 1)
-        # sio.savemat('./outputs_c.mat', mdict = {'prediction' : outputs_c, 'target' : y_test, 'hidden_s' : hidden_s_c})
-        #summary_writer.add_summary(summary,epoch)
         data[epoch] = L[-1] 
-
+    
         sys.stdout.flush()
         print("\rIteration: %s Loss: %f " % (epoch, L[-1])),
         sys.stdout.flush()
-        start = 0   
-        if epoch%1 == 0 :
-            X = X_train[0:2]
-            Y = y_train[0:2]
-            w_x = sess.run(rnn.Wx, feed_dict={rnn._inputs: X, y: Y})
-            w_h = sess.run(rnn.Wh, feed_dict={rnn._inputs: X, y: Y})
-            w_o = sess.run(rnn.Wo, feed_dict={rnn._inputs: X, y: Y}) 
-            b_o = sess.run(rnn.bo, feed_dict={rnn._inputs: X, y: Y}) 
-
-            sio.savemat('./results.mat', mdict = {'w_x' : w_x, 'w_h' : w_h, 'w_o' : w_o, 'b_o' : b_o, 'data' : data})
-            np.savetxt('loss_rnn_ei_persistence_5_cm.csv',data)    
-
-
-
-
+        start = 0
+        if epoch % 10 == 0:
+            w_x = sess.run(rnn.Wx)
+            w_h = sess.run(rnn.Wh)
+            w_o = sess.run(rnn.Wo)
+            b_o = sess.run(rnn.bo)
+            # stride for 16 x 16 to 16 x 16 is one more than for 8 x 8 to 8 x 8
+            with h5py.File(path + "/Epoch_%d_iter_%d.h5"%(epoch, it), "w") as f:
+                f.create_dataset("Wx", data = w_x)
+                f.create_dataset("Wh", data = w_h)
+                f.create_dataset("Wo", data = w_o)
+                f.create_dataset("bo", data = b_o)
+                f.create_dataset("epoch_losses", data = data)
