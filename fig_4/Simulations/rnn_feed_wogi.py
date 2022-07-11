@@ -232,11 +232,11 @@ target_size = 64
 # importing learned weights
 # persistence
 
-perweights = './rnn_persistence_ei_varblanks_weights_5_cm/CM_Weights/'
-Wxp = np.loadtxt(perweights + 'Wx26.csv').astype(np.float32)
-Whp = np.loadtxt(perweights + 'Wh26.csv').astype(np.float32)
-Wop = np.loadtxt(perweights + 'Wo26.csv').astype(np.float32)
-Bop = np.loadtxt(perweights + 'Bo26.csv').astype(np.float32)
+perweights = './new_weights//'
+Wxp = np.loadtxt(perweights + 'Wx2237_per.csv').astype(np.float32)
+Whp = np.loadtxt(perweights + 'Wh2237_per.csv').astype(np.float32)
+Wop = np.loadtxt(perweights + 'Wo2237_per.csv').astype(np.float32)
+Bop = np.loadtxt(perweights + 'bo2237_per.csv').astype(np.float32)
 Bip = np.zeros((hidden_layer_size)).astype(np.float32)
 
 # change
