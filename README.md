@@ -6,7 +6,7 @@ Codes accompanying the manuscipt titled:
 This repository contains the data analysis and simulations code used for generating figures:  
 Figure 1. E, H, and I  
 Figure 2. A, B, and C  
-Figure 3. A, C, D, E, F, and G  
+Figure 3. A, B, C, D, E, F, and G  
 Figure 4. A, D, E  
 Figure 5. ABCDE, FGH  
 Figure 6. ABC, D  
