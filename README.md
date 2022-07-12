@@ -1,4 +1,4 @@
-Sparse topographic recurrent neural network for change detection  
+# Sparse topographic recurrent neural network (st-RNN) for change detection
 
 Codes accompanying the manuscipt titled:  
 	A mid-brain inspired recurrent neural network model for robust change detection.  
@@ -17,31 +17,3 @@ Python (>= 3.0 is preferable)
 numpy  (>= 1.7 is preferable)  
 OpenCV (>= 2.4 is preferable)  
 tensorflow (computational graphs written with tensorflow.compat.v1)  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
