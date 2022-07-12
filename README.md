@@ -3,7 +3,7 @@ Sparse topographic recurrent neural network for change detection
 Codes accompanying the manuscipt titled:  
 	A mid-brain inspired recurrent neural network model for robust change detection.  
 
-This repository contains the data analysis and simulations code used for generating figures:
+This repository contains the data analysis and simulations code used for generating figures:  
 Figure 1. E, H, and I  
 Figure 2. A, B, and C  
 Figure 3. A, C, D, E, F, and G  
