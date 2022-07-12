@@ -1,12 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Jun  8 15:45:47 2022
-
-@author: yashm
-"""
-
-# -*- coding: utf-8 -*-
-"""
 @author(s): Jogendra Kundu      jogendrak@iisc.ac.in
             Yash M. Sawant     yashsawant@iisc.ac.in
 
