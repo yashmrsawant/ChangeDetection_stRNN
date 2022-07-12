@@ -16,7 +16,7 @@ All python codes tested with python3.
 Python (>= 3.0 is preferable)
 numpy  (>= 1.7 is preferable)
 OpenCV (>= 2.4 is preferable)
-tensorflow (computational graphs written in tensorflow.compat.v1)
+tensorflow (computational graphs written with tensorflow.compat.v1)
 
 
 
