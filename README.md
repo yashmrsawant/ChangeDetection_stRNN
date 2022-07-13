@@ -1,6 +1,6 @@
 # Sparse topographic recurrent neural network (st-RNN) for change detection
 
-Codes accompanying the manuscipt titled:  
+Codes accompanying the manuscript titled:  
 	*A mid-brain inspired recurrent neural network model for robust change detection.*
 
 This repository contains the data analysis and simulations code used for generating figures:  
