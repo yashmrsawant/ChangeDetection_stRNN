@@ -2,7 +2,8 @@
 """
 Created on Thu Nov  7 21:29:39 2019
 
-@author: dhawa
+@author: Yash M. Sawant
+         Jogendra Kundu
 """
 
 import numpy as np
