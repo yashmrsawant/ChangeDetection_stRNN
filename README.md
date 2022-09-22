@@ -1,9 +1,11 @@
 # Sparse topographic recurrent neural network (st-RNN) for change detection
 
-## A Midbrain Inspired Recurrent Neural Network Model for Robust Change Detection --- Sawant, Kundu et al., 2022 https://doi.org/10.1523/JNEUROSCI.0164-22.2022 
+## A Midbrain Inspired Recurrent Neural Network Model for Robust Change Detection
 
 
-This repository contains the data analysis and simulations codes used for generating figures:  
+This repository contains the data analysis and simulations codes used for generating figures in the publication:
+A Midbrain Inspired Recurrent Neural Network Model for Robust Change Detection - --- Sawant, Kundu et al., 2022 https://doi.org/10.1523/JNEUROSCI.0164-22.2022
+
 * Figure 1. E, H, and I  
 * Figure 2. A, B, and C  
 * Figure 3. A, B, C, D, E, F, and G  
