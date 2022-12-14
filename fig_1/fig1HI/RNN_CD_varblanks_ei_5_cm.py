@@ -79,7 +79,7 @@ Wh_mask_big = np.append( np.append(CM_256_256, CM_256_64, axis=1),
                 np.append(CM_64_256, CM_64_64, axis=1), axis=0)
 Wo_mask_big = np.append(CM_256_64, CM_64_64, axis=0)
 
-# connecting 8 x 8 topological input space to 8 x 8 output space
+# connecting 8 x 8 topological input space to 8 x 8 output space; DEFINE CONNECTIVITY MATRICES USING rd (radius of connections) and st (sparsity in connections) 
 
 sz = 8
 rd = 4
